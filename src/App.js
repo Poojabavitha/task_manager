@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import './App.css';
 import {firebase_app} from './firebase.js';
 import {getAuth,
-  // signInWithEmailAndPassword,
-  // signOut,
-  // onAuthStateChanged, 
+  signInWithEmailAndPassword,
+  signOut,
+  onAuthStateChanged, 
 createUserWithEmailAndPassword,
 updateProfile} from 'firebase/auth';
 
@@ -18,21 +18,42 @@ function App() {
   const auth=getAuth(firebase_app);
 
   const [component, switchComponent] = useState(()=>'signin');
-  const [user,setUser]=useState(()=>({active:false, user:null}))
+  const [user,setUser]=useState(()=>({active:false, user:null}));
+
+  useEffect(()=>{
+onAuthStateChanged(auth,function(user){
+  console.log(user);
+  
+  if(user)
+  
+  setUser({active:true,user})
+}, error=>{
+  alert('Something went wrong');
+  console.error(error);
+  
+});
+  },[]);
 
   function toogleAuthComp(){
     switchComponent(prev=>prev==='signin'? 'signup': 'signin')
   }
 
-  function signIn(username,Password){
-
+  async function signIn(username,password){
+    try {
+      const credential = await signInWithEmailAndPassword(auth,username,password);
+      setUser({active:true,user:credential.user});
+    
+    } catch (error) {
+       console.error(error.message);
+         
+    }
   }
-  async function signUp(username,emailaddress,password,displayName){
+  async function signUp(username,password, phonenumber,displayName){
 
 try {
   const credential = await createUserWithEmailAndPassword(auth,username,password);
   await updateProfile(auth.currentUser,{
-emailaddress,
+    phonenumber,
 displayName
   });
 
@@ -45,20 +66,20 @@ setUser({active:true,user:credential.user});
 }
  }
 
- async function signOut() {
-  await signOut();
+ async function logOut() {
+  await signOut(auth);
   setUser({active:false,user:null});
  }
 
- if(user.active){
+ if(user.active===true){
 return(
-  <Main email={user.user.email} signOut={signOut}/>
+  <Main email={user.user?.displayName} signOut={logOut}/>
 )
  }
   return (
   <>
   <div>
-    <button onClick={toogleAuthComp}>SignIn</button>
+    <button onClick={toogleAuthComp}>SignIn</button>&nbsp;
     <button onClick={toogleAuthComp}>SignUp</button>
   </div><hr/>
     {

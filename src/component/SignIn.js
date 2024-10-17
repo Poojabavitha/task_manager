@@ -1,22 +1,22 @@
 import React from "react";
 import { useState } from "react";
+import '../App.css'
 
 function SignIn ({signIn}){
   const [data,setData] = useState(()=>{});
 
-  function handleInputChange({target:{Name,value}}){
-setData({...data,[Name]:value})
+  function handleInputChange({target:{name,value}}){
+setData({...data,[name]:value})
   }
 
   function submitform(){
-    signIn(data.Emailaddress, data.Password)
-  }
-    return(
-        <div class="form">
-        <input onChange={handleInputChange} type="text" name="username" placeholder="Enter username"></input> 
-      <input onChange={handleInputChange} type="email" name="emailaddress" placeholder="Enter your email"></input> 
-      <input onChange={handleInputChange} type="password" name="password" placeholder="Enter password"></input> 
-      <button onClick={submitform}>Register</button>
+    signIn(data.username, data.password)
+  }    
+  return(
+        <div className="form">
+      <input onChange={handleInputChange} type="email" name="username" placeholder="Enter your email" /> <br/>
+      <input onChange={handleInputChange} type="password" name="password" placeholder="Enter password"/><br/> 
+      <button onClick={submitform}>login</button>
       </div>
     )
 }
