@@ -40,13 +40,23 @@ onAuthStateChanged(auth,function(user){
 
   async function signIn(username,password){
     try {
+      if (!username || !password) {
+        throw new Error("Both username and password are required.");
+    }
       const credential = await signInWithEmailAndPassword(auth,username,password);
       setUser({active:true,user:credential.user});
     
     } catch (error) {
        console.error(error.message);
-         
+       if (error.code === 'auth/invalid-email') {
+        console.error('Invalid email address format.');
+    } else if (error.code === 'auth/user-not-found') {
+        console.error('No user found with this email address.');
+    } else if (error.code === 'auth/wrong-password') {
+        console.error('Incorrect password.');
     }
+         
+}
   }
   async function signUp(username,password, phonenumber,displayName){
 
