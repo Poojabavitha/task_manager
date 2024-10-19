@@ -1,0 +1,9 @@
+.todo_container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    max-width: 80%;
+    flex-wrap: wrap;
+    gap: 10px;
+}

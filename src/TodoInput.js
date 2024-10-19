@@ -1,6 +1,7 @@
-import React, { useState } from "react";
-import { database } from "./firebase";
-import {set, ref} from 'firebase/database'
+import React, { useState ,useEffect} from "react";
+import { database, firebase_app } from "./firebase";
+import {set, ref} from 'firebase/database';
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 
 function generateUniqueID(num){
@@ -15,9 +16,26 @@ function generateUniqueID(num){
  return str;
 }
 
-function Todo(){
+function TodoInput(){
     
-        const [data,setData]=useState(()=>{complete});
+        const [data,setData]=useState(()=>({complete:false}));
+
+       const [user,setUser]= useState({active:false, user:null});
+
+       const auth = getAuth(firebase_app);
+
+    useEffect(()=>{
+        onAuthStateChanged(auth,function(user){
+            if(user)
+            
+            setUser({active:true,user})
+          }, error=>{
+            alert('Something went wrong');
+            console.error(error);
+            
+          });
+    },[]);
+
         function handleInputChange({target : {name,value}}){
             setData({...data,[name]:value})
         }
@@ -25,7 +43,7 @@ function Todo(){
         async function addStuff() {
             try {
                 const created_ref = ref (database,'todo/'+generateUniqueID(10));
-              await set(created_ref, {...data});
+              await set(created_ref, {...data,uid:user.user?.uid});
               alert('Task added...');
             } catch (error) {
                 alert('Something went wrong...')
@@ -51,4 +69,4 @@ function Todo(){
     )
 }
 
-export default Todo;
+export default TodoInput;
