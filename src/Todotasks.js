@@ -23,19 +23,22 @@ useEffect(()=>{
        }
         setTodos(todos);
         
-       
-     });
+       });
 
 },[uid]);
 
     return(
-<div style={{width:'50%',maxwidth: '300px' }}>
+<div style={{width:'50%',maxwidth: '300px'}}>
     {
         todos.length>0 ? (
             todos.map(todo=>(
                   <details key={todo.todo_id}>
                      <summary>{todo.title}</summary>  
                      <p>{todo.description}</p>  
+                     <div>
+                        <button onClick={()=> deletestuff(todo.todo_id)}>Delete</button>
+                        <button value={todo.todo_id}><Fapen/>Edit</button>
+                     </div>
                   </details>
             )) ): (
                 <p>Empty bucket</p>
