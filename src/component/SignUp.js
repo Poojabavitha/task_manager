@@ -13,7 +13,7 @@ setData({...data,[name]:value})
   }
 
   function submitform(){
-    signUp(data.username, data.phone, data.password, data.name)
+    signUp(data.username,  data.password, data.phone, data.name)
   }
     return(
         <div className="form">

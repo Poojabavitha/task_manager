@@ -10,7 +10,7 @@ setData({...data,[name]:value})
   }
 
   function submitform(){
-    signIn(data.username, data.password)
+    signIn(data.username, data.password, data.phoneNumber)
   }    
   return(
         <div className="form">

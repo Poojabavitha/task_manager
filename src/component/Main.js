@@ -42,24 +42,27 @@ else{
 }
 
 
-function Main({user,signOut}){
 
-    const [edit_id,setEditId]=useState(()=>null);
+function Main({user={},signOut}){
 
-    function editTodo(todo_id){
-        setEditId(todo_id);
+    const [edit_todo,setEditTodo]=useState(()=>null);
+
+    function editTodo(edit_todo){
+        console.log(edit_todo);
+        
+        setEditTodo(edit_todo);
     }
 
     
 
     return(
         <div style={{padding:'20px'}} >
-            <h4>Hi {user?.email},{greetingofTheDay()}</h4>
+            <h4>Hi {user.email || 'Guest'},{greetingofTheDay()}</h4>
             <button onClick={signOut}>signOut</button><hr/>
             <div className="todo_container">
                 
-                <TodoInput edit_id={edit_id}/>
-                <Todotasks uid={user?.uid}/>
+                <TodoInput edit_todo={edit_todo} setEditTodo={setEditTodo}/>
+                <Todotasks uid={user?.uid} editTodo={editTodo}/>
                 </div>
         </div>
     )

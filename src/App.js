@@ -22,7 +22,7 @@ function App() {
 
   useEffect(()=>{
 onAuthStateChanged(auth,function(user){
-  console.log(user);
+  
   
   if(user)
   
@@ -34,9 +34,7 @@ onAuthStateChanged(auth,function(user){
 });
   },[]);
 
-  function toogleAuthComp(){
-    switchComponent(prev=>prev==='signin'? 'signup': 'signin')
-  }
+  
 
   async function signIn(username,password){
     try {
@@ -83,14 +81,14 @@ setUser({active:true,user:credential.user});
 
  if(user.active===true){
 return(
-  <Main email={user.user?.displayName} signOut={logOut}/>
+  <Main email={user} signOut={logOut}/>
 )
  }
   return (
   <>
   <div>
-    <button onClick={toogleAuthComp}>SignIn</button>&nbsp;
-    <button onClick={toogleAuthComp}>SignUp</button>
+  <button onClick={()=>switchComponent('signin')}>SignIn</button>&nbsp;
+  <button onClick={()=>switchComponent('signup')}>SignUp</button>
   </div><hr/>
     {
       component==='signin'?(<SignIn signIn={signIn}/>) : (<SignUp signUp={signUp}/>)
